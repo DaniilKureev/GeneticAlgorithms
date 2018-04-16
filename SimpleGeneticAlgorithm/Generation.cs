@@ -9,32 +9,36 @@ namespace SimpleGeneticAlgorithm
 {
     public class Generation : IEnumerable<Agent>
     {
-        List<Agent> _agents;
-        int _agentsNumber;
-        float _maxValue;
-        float _meanValue;
+        List<Agent> agents;
+        int agentsCount;
+        float maxValue;
+        float meanValue;
+        int generationNumber;
+        int precision;
 
         public Generation()
         {
-            _agents = new List<Agent>();
-            _maxValue = float.MinValue;
-            _meanValue = 0f;
-            _agentsNumber = 0;
+            agents = new List<Agent>();
+            maxValue = float.MinValue;
+            meanValue = 0f;
+            agentsCount = 0;
         }
 
-        public Generation(int count)
+        // find precision here
+        public Generation(int count, int intervalLowerBound, int intervalUpperBound, int generationNumber)
         {
-            _agents = new List<Agent>();
-            _maxValue = float.MinValue;
-            _meanValue = 0f;
-            _agentsNumber = count;
+            agents = new List<Agent>();
+            maxValue = float.MinValue;
+            meanValue = 0f;
+            agentsCount = count;
+            this.generationNumber = generationNumber;
         }
 
         public List<Agent> Agents
         {
             get
             {
-                return _agents;
+                return agents;
             }
         }
 
@@ -42,7 +46,7 @@ namespace SimpleGeneticAlgorithm
         {
             get
             {
-                return _maxValue;
+                return maxValue;
             }
         }
 
@@ -50,13 +54,13 @@ namespace SimpleGeneticAlgorithm
         {
             get
             {
-                return _meanValue;
+                return meanValue;
             }
         }
 
         public IEnumerator<Agent> GetEnumerator()
         {
-            return _agents.GetEnumerator();
+            return agents.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -66,9 +70,9 @@ namespace SimpleGeneticAlgorithm
 
         public void SetMaxGenerationValue()
         {
-            if (_agents != null && _agents.Count > 0)
+            if (agents != null && agents.Count > 0)
             {
-                _maxValue = _agents.Select(o => o.FunctionValue).Max();
+                maxValue = agents.Select(o => o.FunctionValue).Max();
             }
             else
             {
@@ -78,9 +82,9 @@ namespace SimpleGeneticAlgorithm
 
         public void SetMeanGeerationValue()
         {
-            if (_agents != null && _agents.Count > 0)
+            if (agents != null && agents.Count > 0)
             {
-                _meanValue = _agents.Select(o => o.FunctionValue).Average();
+                meanValue = agents.Select(o => o.FunctionValue).Average();
             }
             else
             {

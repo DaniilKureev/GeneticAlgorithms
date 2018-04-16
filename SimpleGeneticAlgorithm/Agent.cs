@@ -9,16 +9,17 @@ namespace SimpleGeneticAlgorithm
 {
     public class Agent
     {
-        float _yValue;
-        float _xValue;
-        BitArray _chromosome;
+        float y;
+        float x;
+        BitArray chromosome;
+        float selectionProbability = 1f;
 
         public Agent() { }
 
         public Agent(float xValue, int precision)
         {
-           _chromosome = new BitArray(precision);
-            _xValue = xValue;
+            chromosome = new BitArray(precision);
+            x = xValue;
             SetFunctionValue();
         }
 
@@ -26,13 +27,13 @@ namespace SimpleGeneticAlgorithm
         {
             get
             {
-                return _yValue;
+                return y;
             }
         }
 
         private void SetFunctionValue()
         {
-            _yValue = (float)Math.Cos(_xValue);
+            y = (float)((x - 1) * Math.Cos(3 * x - 15));
         }
     }
 }

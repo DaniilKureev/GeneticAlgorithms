@@ -11,9 +11,10 @@ using SimpleGeneticAlgorithm;
 
 namespace GeneticAlgorithms
 {
+    // 6 Вариант
     public partial class Form1 : Form
     {
-        Generation _generation;
+        Generation generation;
 
         public Form1()
         {
@@ -24,7 +25,7 @@ namespace GeneticAlgorithms
 
         private void StartButton_Click(object sender, EventArgs e)
         {
-            int population;
+            int agentsCount;
             float mutationProbability;
             float crossProbabilty;
             if (!float.TryParse(CrossoverText.Text, out crossProbabilty))
@@ -39,7 +40,7 @@ namespace GeneticAlgorithms
                 MessageBox.Show("Enter mutation probabilty", "Warning", MessageBoxButtons.OK);
                 return;
             }
-            if (!int.TryParse(AgentsNumberText.Text, out population))
+            if (!int.TryParse(AgentsNumberText.Text, out agentsCount))
             {
                 CrossoverText.Focus();
                 MessageBox.Show("Enter mutation probabilty", "Warning", MessageBoxButtons.OK);
@@ -48,16 +49,13 @@ namespace GeneticAlgorithms
             ResultGroup.Enabled = true;
             try
             {
-                _generation = new Generation(population);
-                _generation.Agents.Add(new Agent());
-                _generation.Agents.Add(new Agent());
-                _generation.Agents.Add(new Agent());
+                generation = new Generation(agentsCount, Consts.LowerBound, Consts.UpperBound, 0);
             }
-            catch(ApplicationException ex)
+            catch (ApplicationException ex)
             {
                 MessageBox.Show(ex.Message, "Error!", MessageBoxButtons.OK);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Fatal error! =(", MessageBoxButtons.OK);
             }
@@ -65,7 +63,7 @@ namespace GeneticAlgorithms
 
         private void ClearButton_Click(object sender, EventArgs e)
         {
-            _generation = null;
+            generation = null;
         }
     }
 }
