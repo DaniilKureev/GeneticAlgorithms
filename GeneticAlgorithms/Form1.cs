@@ -15,6 +15,13 @@ namespace GeneticAlgorithms
         public Form1()
         {
             InitializeComponent();
+            ResultGroup.Enabled = false;
+            StartPosition = FormStartPosition.CenterScreen;
+        }
+
+        private void StartButton_Click(object sender, EventArgs e)
+        {
+            ResultGroup.Enabled = true;
         }
     }
 }
