@@ -79,5 +79,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SimpleGeneticAlgorithm\SimpleGeneticAlgorithm.csproj">
+      <Project>{d1b8c868-00a0-4ad2-a848-f1bd592a6dfa}</Project>
+      <Name>SimpleGeneticAlgorithm</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
