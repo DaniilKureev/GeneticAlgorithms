@@ -39,7 +39,7 @@ namespace GeneticAlgorithms
         MessageBox.Show("Enter mutation probabilty", "Warning", MessageBoxButtons.OK);
         return;
       }
-      if (!int.TryParse(PrecisionText.Text, out precision) && precision < 1)
+      if (!int.TryParse(PrecisionText.Text, out precision) && precision < 0)
       {
         CrossoverText.Focus();
         MessageBox.Show("Enter mutation probabilty", "Warning", MessageBoxButtons.OK);
@@ -54,7 +54,7 @@ namespace GeneticAlgorithms
       ResultGroup.Enabled = true;
       try
       {
-
+        ProcessGeneticAlgortihm(precision, agentsNumber, mutationProbability, crossProbabilty, Consts.MaxIterationValue, Consts.LowerBound, Consts.UpperBound);
       }
       catch (ApplicationException ex)
       {
@@ -70,12 +70,13 @@ namespace GeneticAlgorithms
     {
 
     }
-    public void ProcessGeneticAlgortihm(int precision, uint agentsCount, float mutationProbability, float crossProbabilty, int maxIterationValue, int lowerBound, int upperBound)
+    private void ProcessGeneticAlgortihm(int precision, uint agentsCount, float mutationProbability, float crossProbabilty, int maxIterationValue, int lowerBound, int upperBound)
     {
       int chromosomeLength = SimpleAlgorithm.CalculateChromosomeLength(precision, lowerBound, upperBound);
       //int scalesCount = (int)Math.Pow(2, chromosomeLength);
 
       Generation generation = new Generation(agentsCount, chromosomeLength, 0);
+      generation.CreateFirstPoppulation();
     }
   }
 }

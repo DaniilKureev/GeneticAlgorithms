@@ -87,7 +87,14 @@ namespace SimpleGeneticAlgorithm
         int intervalsCount = scalesCount - 1; // and it's max scale value
         for (uint i = 0; i < agentsCount; i++)
         {
-          int x = (int)(0 + (intervalsCount - 0.0) * i / intervalsCount);
+          int x = (int)(0 + (intervalsCount - 0.0) * i / (agentsCount - 1));
+          string s = Convert.ToString(x, 2);
+          if(s.Length > chromosomeLength) throw new ArgumentException("Very huge number!");
+          bool[] bits = s.PadRight(chromosomeLength, '0').Select(c => Convert.ToBoolean(byte.Parse(c.ToString()))).ToArray();
+          BitArray bitArray = new BitArray(bits);
+          if (bitArray.Length > 32) throw new ArgumentException("must be at most 32 bits long");
+          var result = new int[1];
+          bitArray.CopyTo(result, 0);
         }
       }
     }
