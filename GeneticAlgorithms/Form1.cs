@@ -72,7 +72,7 @@ namespace GeneticAlgorithms
     }
     private void ProcessGeneticAlgortihm(int precision, uint agentsCount, float mutationProbability, float crossProbabilty, int maxIterationValue, int lowerBound, int upperBound)
     {
-      int chromosomeLength = SimpleAlgorithm.CalculateChromosomeLength(precision, lowerBound, upperBound);
+      int chromosomeLength = SimpleAlgorithmHelper.CalculateChromosomeLength(precision, lowerBound, upperBound);
       //int scalesCount = (int)Math.Pow(2, chromosomeLength);
 
       Generation generation = new Generation(agentsCount, chromosomeLength, 0);
