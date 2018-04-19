@@ -43,6 +43,11 @@ namespace SimpleGeneticAlgorithm
             if (intervalsCount < 1) throw new ArgumentException("Number of intervals shuld be positive!");
             return lowerBound + x * (upperBound - lowerBound) / (float)intervalsCount;
         }
+
+        public static float SetFunctionValue(float realX)
+        {
+            return (float)((realX - 1) * Math.Cos(3 * realX - 15));
+        }
     }
 }
 

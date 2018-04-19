@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 using SimpleGeneticAlgorithm;
 
 namespace GeneticAlgorithms
@@ -19,6 +20,8 @@ namespace GeneticAlgorithms
             InitializeComponent();
             ResultGroup.Enabled = false;
             StartPosition = FormStartPosition.CenterScreen;
+            Chart.ChartAreas.Add(new ChartArea("Math functions"));
+            Chart.Dock = DockStyle.Fill;
         }
 
         private void StartButton_Click(object sender, EventArgs e)
@@ -77,6 +80,15 @@ namespace GeneticAlgorithms
             Generation generation = new Generation(agentsCount, chromosomeLength, Consts.LowerBound, Consts.UpperBound, 0);
             generation.CreateFirstPoppulation();
             var agents = generation.ToList();
+            Series mySeriesOfPoint = new Series("Cos(X)*(3-x)");
+            mySeriesOfPoint.ChartType = SeriesChartType.Line;
+            mySeriesOfPoint.ChartArea = "Math functions";
+            for (float i = Consts.LowerBound; i <= Consts.UpperBound; i += 0.0001f)
+            {
+                mySeriesOfPoint.Points.AddXY(i, SimpleAlgorithmHelper.SetFunctionValue(i));
+            }
+            //Добавляем созданный набор точек в Chart
+            Chart.Series.Add(mySeriesOfPoint);
         }
     }
 }

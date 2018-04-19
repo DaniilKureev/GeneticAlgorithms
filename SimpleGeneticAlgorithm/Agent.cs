@@ -31,7 +31,7 @@ namespace SimpleGeneticAlgorithm
             this.intervalsCount = intervalsCount;
             chromosome = SimpleAlgorithmHelper.ToBitArray(integerX, chromosomeLength);
             realX = SimpleAlgorithmHelper.ToRealValue(integerX, lowerIntevalBound, upperIntervalBound, intervalsCount);
-            SetFunctionValue();
+            realY = SimpleAlgorithmHelper.SetFunctionValue(realX);
         }
 
         public float Y
@@ -47,11 +47,6 @@ namespace SimpleGeneticAlgorithm
         public BitArray Chromosome
         {
             get { return chromosome; }
-        }
-
-        private void SetFunctionValue()
-        {
-            realY = (float)((realX - 1) * Math.Cos(3 * realX - 15));
         }
     }
 }
