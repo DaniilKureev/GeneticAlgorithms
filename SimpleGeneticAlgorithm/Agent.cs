@@ -10,15 +10,16 @@ namespace SimpleGeneticAlgorithm
   public class Agent
   {
     float y;
-    float x;
+    int x;
+    int decimalCromosome;
     BitArray chromosome;
     float selectionProbability = 1f;
 
     public Agent() { }
 
-    public Agent(float xValue, int precision)
+    public Agent(int xValue, int chromosomeLength)
     {
-      chromosome = new BitArray(precision);
+      chromosome = new BitArray(chromosomeLength);
       x = xValue;
       SetFunctionValue();
     }
@@ -31,6 +32,11 @@ namespace SimpleGeneticAlgorithm
     private void SetFunctionValue()
     {
       y = (float)((x - 1) * Math.Cos(3 * x - 15));
+    }
+
+    public void CreateNewChromosome()
+    {
+
     }
   }
 }

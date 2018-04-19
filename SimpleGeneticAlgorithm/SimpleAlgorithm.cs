@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 
 namespace SimpleGeneticAlgorithm
 {
-    public class SimpleAlgorithm
+  public static class SimpleAlgorithm
+  {
+    public static int CalculateChromosomeLength(int precision, int lowerBound, int upperBound)
     {
-        
+      double itervalsNumber = (upperBound - lowerBound) * Math.Pow(10, precision);
+      return (int)Math.Ceiling(Math.Log(itervalsNumber, 2));
     }
+  }
 }
+

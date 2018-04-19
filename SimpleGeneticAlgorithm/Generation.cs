@@ -10,27 +10,23 @@ namespace SimpleGeneticAlgorithm
   public class Generation : IEnumerable<Agent>
   {
     List<Agent> agents;
-    int agentsCount;
+    int chromosomeLength;
+    uint agentsCount;
     float maxValue;
     float meanValue;
     int generationNumber;
-    int precision;
 
     public Generation()
     {
       agents = new List<Agent>();
-      maxValue = float.MinValue;
-      meanValue = 0f;
-      agentsCount = 0;
     }
 
     // find precision here
-    public Generation(int count, int intervalLowerBound, int intervalUpperBound, int generationNumber)
+    public Generation(uint agentsCount, int chromosomeLength, int generationNumber)
     {
       agents = new List<Agent>();
-      maxValue = float.MinValue;
-      meanValue = 0f;
-      agentsCount = count;
+      this.agentsCount = agentsCount;
+      this.chromosomeLength = chromosomeLength;
       this.generationNumber = generationNumber;
     }
 
@@ -71,7 +67,7 @@ namespace SimpleGeneticAlgorithm
       }
     }
 
-    public void SetMeanGeerationValue()
+    public void SetMeanGenerationValue()
     {
       if (agents != null && agents.Count > 0)
       {
@@ -80,6 +76,19 @@ namespace SimpleGeneticAlgorithm
       else
       {
         throw new ApplicationException("Agents population should be greater than 0!");
+      }
+    }
+
+    public void CreateFirstPoppulation()
+    {
+      if (generationNumber == 0)
+      {
+        int scalesCount = (int)Math.Pow(2, chromosomeLength);
+        int intervalsCount = scalesCount - 1; // and it's max scale value
+        for (uint i = 0; i < agentsCount; i++)
+        {
+          int x = (int)(0 + (intervalsCount - 0.0) * i / intervalsCount);
+        }
       }
     }
   }
