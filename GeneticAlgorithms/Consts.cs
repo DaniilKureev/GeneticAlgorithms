@@ -8,8 +8,8 @@ namespace GeneticAlgorithms
 {
   public static class Consts
   {
-    public static readonly int LowerBound = 0;
-    public static readonly int UpperBound = 7;
+    public static readonly int LowerBound = -10;
+    public static readonly int UpperBound = 10;
     public static readonly int MaxIterationValue = 10000;
   }
 }

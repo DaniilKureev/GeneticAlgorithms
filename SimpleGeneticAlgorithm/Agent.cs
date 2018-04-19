@@ -7,36 +7,51 @@ using System.Threading.Tasks;
 
 namespace SimpleGeneticAlgorithm
 {
-  public class Agent
-  {
-    float y;
-    int x;
-    int decimalCromosome;
-    BitArray chromosome;
-    float selectionProbability = 1f;
-
-    public Agent() { }
-
-    public Agent(int xValue, int chromosomeLength)
+    public class Agent
     {
-      chromosome = new BitArray(chromosomeLength);
-      x = xValue;
-      SetFunctionValue();
-    }
+        float realY;
+        float realX;
+        int integerX;
 
-    public float FunctionValue
-    {
-      get { return y; }
-    }
+        BitArray chromosome;
 
-    private void SetFunctionValue()
-    {
-      y = (float)((x - 1) * Math.Cos(3 * x - 15));
-    }
+        int lowerIntevalBound;
+        int upperIntervalBound;
+        int intervalsCount;
 
-    public void CreateNewChromosome()
-    {
+        float selectionProbability = 1f;
 
+        public Agent() { }
+
+        public Agent(int xValue, int chromosomeLength, int intervalsCount, int lowerBound, int upperBound)
+        {
+            integerX = xValue;
+            lowerIntevalBound = lowerBound;
+            upperIntervalBound = upperBound;
+            this.intervalsCount = intervalsCount;
+            chromosome = SimpleAlgorithmHelper.ToBitArray(integerX, chromosomeLength);
+            realX = SimpleAlgorithmHelper.ToRealValue(integerX, lowerIntevalBound, upperIntervalBound, intervalsCount);
+            SetFunctionValue();
+        }
+
+        public float Y
+        {
+            get { return realY; }
+        }
+
+        public float X
+        {
+            get { return realX; }
+        }
+
+        public BitArray Chromosome
+        {
+            get { return chromosome; }
+        }
+
+        private void SetFunctionValue()
+        {
+            realY = (float)((realX - 1) * Math.Cos(3 * realX - 15));
+        }
     }
-  }
 }
