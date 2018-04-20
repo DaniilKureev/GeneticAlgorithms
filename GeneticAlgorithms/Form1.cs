@@ -15,6 +15,9 @@ namespace GeneticAlgorithms
   // 6 Вариант
   public partial class Form1 : Form
   {
+
+    List<Generation> history;
+
     public Form1()
     {
       InitializeComponent();
@@ -26,6 +29,7 @@ namespace GeneticAlgorithms
       MutationText.Text = "0.01";
       PrecisionText.Text = "3";
       AgentsNumberText.Text = "100";
+      history = new List<Generation>();
     }
 
     private void StartButton_Click(object sender, EventArgs e)
@@ -82,21 +86,35 @@ namespace GeneticAlgorithms
     {
       int chromosomeLength = SimpleAlgorithmHelper.CalculateChromosomeLength(precision, Consts.LowerBound, Consts.UpperBound);
       Generation generation = new Generation(agentsCount, chromosomeLength, Consts.LowerBound, Consts.UpperBound, 0);
+      int generationNumber = 1;
       generation.CreateFirstPoppulation();
-      var agents = generation.ToList();
+      history.Add(generation);
+      while(generationNumber <= Consts.MaxIterationValue)
+      {
+
+      }
 
       /********************* Chart *****************************/
+      string seriesName = "(x - 1)Cos(3x - 15)";
       Chart.ChartAreas[0].AxisX.Minimum = Consts.LowerBound;
       Chart.ChartAreas[0].AxisX.Maximum = Consts.UpperBound;
       Chart.ChartAreas[0].AxisX.MajorGrid.Interval = 1;
-      Series mySeriesOfPoint = new Series("(x - 1)Cos(3x - 15)");
+      Series mySeriesOfPoint = new Series(seriesName);
       mySeriesOfPoint.ChartType = SeriesChartType.Line;
       mySeriesOfPoint.Color = Color.Blue;
       mySeriesOfPoint.ChartArea = "Math functions";
-      for (float i = Consts.LowerBound; i <= Consts.UpperBound; i += 0.0001f)
-      {
+      for (float i = Consts.LowerBound; i <= Consts.UpperBound; i += 0.001f)
+      {      
         mySeriesOfPoint.Points.AddXY(i, SimpleAlgorithmHelper.SetFunctionValue(i));
       }
+      /*foreach(var agent in generation)
+      {
+        DataPoint dp = new DataPoint(agent.X, agent.Y);
+        dp.MarkerStyle = MarkerStyle.Circle;
+        //dp.IsValueShownAsLabel = true; //Показать значение в точке
+        mySeriesOfPoint.Points.Add(dp);
+      }*/
+
       //Добавляем созданный набор точек в Chart
       Chart.Series.Add(mySeriesOfPoint);
       /********************* Chart *****************************/
