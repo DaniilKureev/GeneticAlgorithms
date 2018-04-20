@@ -21,7 +21,6 @@ namespace GeneticAlgorithms
       ResultGroup.Enabled = false;
       StartPosition = FormStartPosition.CenterScreen;
       Chart.Dock = DockStyle.Fill;
-      Chart.BackColor = Color.Violet;
       Chart.ChartAreas.Add(new ChartArea("Math functions"));
       CrossoverText.Text = "0.5";
       MutationText.Text = "0.01";
@@ -62,7 +61,7 @@ namespace GeneticAlgorithms
       ResultGroup.Enabled = true;
       try
       {
-        ProcessGeneticAlgortihm(precision, agentsNumber, mutationProbability, crossProbabilty, Consts.MaxIterationValue, Consts.LowerBound, Consts.UpperBound);
+        ProcessGeneticAlgortihm(precision, agentsNumber, mutationProbability, crossProbabilty, Consts.MaxIterationValue);
       }
       catch (ApplicationException ex)
       {
@@ -79,14 +78,20 @@ namespace GeneticAlgorithms
 
     }
 
-    private void ProcessGeneticAlgortihm(int precision, uint agentsCount, float mutationProbability, float crossProbabilty, int maxIterationValue, int lowerBound, int upperBound)
+    private void ProcessGeneticAlgortihm(int precision, uint agentsCount, float mutationProbability, float crossProbabilty, int maxIterationValue)
     {
-      int chromosomeLength = SimpleAlgorithmHelper.CalculateChromosomeLength(precision, lowerBound, upperBound);
+      int chromosomeLength = SimpleAlgorithmHelper.CalculateChromosomeLength(precision, Consts.LowerBound, Consts.UpperBound);
       Generation generation = new Generation(agentsCount, chromosomeLength, Consts.LowerBound, Consts.UpperBound, 0);
       generation.CreateFirstPoppulation();
       var agents = generation.ToList();
-      Series mySeriesOfPoint = new Series("Cos(X)*(3-x)");
+
+      /********************* Chart *****************************/
+      Chart.ChartAreas[0].AxisX.Minimum = Consts.LowerBound;
+      Chart.ChartAreas[0].AxisX.Maximum = Consts.UpperBound;
+      Chart.ChartAreas[0].AxisX.MajorGrid.Interval = 1;
+      Series mySeriesOfPoint = new Series("(x - 1)Cos(3x - 15)");
       mySeriesOfPoint.ChartType = SeriesChartType.Line;
+      mySeriesOfPoint.Color = Color.Blue;
       mySeriesOfPoint.ChartArea = "Math functions";
       for (float i = Consts.LowerBound; i <= Consts.UpperBound; i += 0.0001f)
       {
@@ -94,6 +99,12 @@ namespace GeneticAlgorithms
       }
       //Добавляем созданный набор точек в Chart
       Chart.Series.Add(mySeriesOfPoint);
+      /********************* Chart *****************************/
+    }
+
+    private void Form1_Load(object sender, EventArgs e)
+    {
+
     }
   }
 }

@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-      System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+      System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
       this.Chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
       this.ParametersGroup = new System.Windows.Forms.GroupBox();
       this.AgentsNumberText = new System.Windows.Forms.TextBox();
@@ -42,19 +42,21 @@
       this.StartButton = new System.Windows.Forms.Button();
       this.ResultGroup = new System.Windows.Forms.GroupBox();
       this.ClearButton = new System.Windows.Forms.Button();
+      this.ChartZone = new System.Windows.Forms.GroupBox();
       ((System.ComponentModel.ISupportInitialize)(this.Chart)).BeginInit();
       this.ParametersGroup.SuspendLayout();
       this.ResultGroup.SuspendLayout();
+      this.ChartZone.SuspendLayout();
       this.SuspendLayout();
       // 
       // Chart
       // 
-      legend1.Name = "Legend1";
-      this.Chart.Legends.Add(legend1);
-      this.Chart.Location = new System.Drawing.Point(11, 11);
+      legend3.Name = "Legend1";
+      this.Chart.Legends.Add(legend3);
+      this.Chart.Location = new System.Drawing.Point(5, 27);
       this.Chart.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
       this.Chart.Name = "Chart";
-      this.Chart.Size = new System.Drawing.Size(626, 422);
+      this.Chart.Size = new System.Drawing.Size(618, 377);
       this.Chart.TabIndex = 0;
       this.Chart.Text = "Chart";
       // 
@@ -70,11 +72,11 @@
       this.ParametersGroup.Controls.Add(this.label1);
       this.ParametersGroup.Controls.Add(this.StartButton);
       this.ParametersGroup.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this.ParametersGroup.Location = new System.Drawing.Point(651, 10);
+      this.ParametersGroup.Location = new System.Drawing.Point(876, 10);
       this.ParametersGroup.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
       this.ParametersGroup.Name = "ParametersGroup";
       this.ParametersGroup.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-      this.ParametersGroup.Size = new System.Drawing.Size(230, 273);
+      this.ParametersGroup.Size = new System.Drawing.Size(230, 274);
       this.ParametersGroup.TabIndex = 1;
       this.ParametersGroup.TabStop = false;
       this.ParametersGroup.Text = "Parameters";
@@ -169,11 +171,11 @@
       // 
       this.ResultGroup.Controls.Add(this.ClearButton);
       this.ResultGroup.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this.ResultGroup.Location = new System.Drawing.Point(651, 288);
+      this.ResultGroup.Location = new System.Drawing.Point(876, 288);
       this.ResultGroup.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
       this.ResultGroup.Name = "ResultGroup";
       this.ResultGroup.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-      this.ResultGroup.Size = new System.Drawing.Size(230, 194);
+      this.ResultGroup.Size = new System.Drawing.Size(230, 259);
       this.ResultGroup.TabIndex = 2;
       this.ResultGroup.TabStop = false;
       this.ResultGroup.Text = "Result";
@@ -190,21 +192,34 @@
       this.ClearButton.UseVisualStyleBackColor = true;
       this.ClearButton.Click += new System.EventHandler(this.ClearButton_Click);
       // 
+      // ChartZone
+      // 
+      this.ChartZone.Controls.Add(this.Chart);
+      this.ChartZone.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+      this.ChartZone.Location = new System.Drawing.Point(12, 10);
+      this.ChartZone.Name = "ChartZone";
+      this.ChartZone.Size = new System.Drawing.Size(859, 536);
+      this.ChartZone.TabIndex = 3;
+      this.ChartZone.TabStop = false;
+      this.ChartZone.Text = "Chart";
+      // 
       // Form1
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(890, 492);
+      this.ClientSize = new System.Drawing.Size(1113, 558);
+      this.Controls.Add(this.ChartZone);
       this.Controls.Add(this.ResultGroup);
       this.Controls.Add(this.ParametersGroup);
-      this.Controls.Add(this.Chart);
       this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
       this.Name = "Form1";
       this.Text = "Genetic algorithm";
+      this.Load += new System.EventHandler(this.Form1_Load);
       ((System.ComponentModel.ISupportInitialize)(this.Chart)).EndInit();
       this.ParametersGroup.ResumeLayout(false);
       this.ParametersGroup.PerformLayout();
       this.ResultGroup.ResumeLayout(false);
+      this.ChartZone.ResumeLayout(false);
       this.ResumeLayout(false);
 
         }
@@ -224,6 +239,7 @@
         private System.Windows.Forms.TextBox CrossoverText;
     private System.Windows.Forms.TextBox AgentsNumberText;
     private System.Windows.Forms.Label label4;
+    private System.Windows.Forms.GroupBox ChartZone;
   }
 }
 
