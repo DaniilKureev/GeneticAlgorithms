@@ -19,7 +19,7 @@ namespace SimpleGeneticAlgorithm
     int upperIntervalBound;
     int intervalsCount;
 
-    float selectionProbability = 1f;
+    float selectionProbability;
 
     public Agent() { }
 
@@ -47,6 +47,19 @@ namespace SimpleGeneticAlgorithm
     public BitArray Chromosome
     {
       get { return chromosome; }
+    }
+
+    public float SelectionProbability
+    {
+      get { return selectionProbability; }
+    }
+
+    public void SetSelectionProbability(float sumOfWholeValues)
+    {
+      if(sumOfWholeValues != 0)
+      {
+        selectionProbability = realY / sumOfWholeValues;
+      }
     }
   }
 }

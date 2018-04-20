@@ -86,10 +86,14 @@ namespace GeneticAlgorithms
     {
       int chromosomeLength = SimpleAlgorithmHelper.CalculateChromosomeLength(precision, Consts.LowerBound, Consts.UpperBound);
       Generation generation = new Generation(agentsCount, chromosomeLength, Consts.LowerBound, Consts.UpperBound, 0);
-      int generationNumber = 1;
       generation.CreateFirstPoppulation();
+      generation.SetMaxGenerationValue();
+      generation.SetMeanGenerationValue();
+      generation.SetSumForGenerationValues();
       history.Add(generation);
-      while(generationNumber <= Consts.MaxIterationValue)
+      int generationNumber = 1;
+      SimpleAlgorithmHelper.Reproduction(generation, agentsCount);
+      while (generationNumber <= Consts.MaxIterationValue)
       {
 
       }

@@ -48,6 +48,18 @@ namespace SimpleGeneticAlgorithm
     {
       return (float)((realX - 1) * Math.Cos(3 * realX - 15));
     }
+
+    public static Generation Reproduction(Generation originalPopulation, uint agentsCount)
+    {
+      List<int> agentNumber = new List<int>();
+      foreach (var agent in originalPopulation)
+      {
+        agent.SetSelectionProbability(originalPopulation.ValuesSum);
+        agentNumber.Add((int)Math.Round(agent.SelectionProbability * agentsCount));
+      }
+      var newPopulationSize = agentNumber.Sum();
+      return new Generation();
+    }
   }
 }
 

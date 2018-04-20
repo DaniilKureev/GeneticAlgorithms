@@ -14,6 +14,7 @@ namespace SimpleGeneticAlgorithm
     uint agentsCount;
     float maxValue;
     float meanValue;
+    float valuesSum;
     int generationNumber;
     int lowerIntervalBound;
     int upperIntervalBound;
@@ -48,6 +49,11 @@ namespace SimpleGeneticAlgorithm
       get { return meanValue; }
     }
 
+    public float ValuesSum
+    {
+      get { return valuesSum; }
+    }
+
     public IEnumerator<Agent> GetEnumerator()
     {
       return agents.GetEnumerator();
@@ -75,6 +81,17 @@ namespace SimpleGeneticAlgorithm
       if (agents != null && agents.Count > 0)
       {
         meanValue = agents.Select(o => o.Y).Average();
+      }
+      else
+      {
+        throw new ApplicationException("Agents population should be greater than 0!");
+      }
+    }
+    public void SetSumForGenerationValues()
+    {
+      if (agents != null && agents.Count > 0)
+      {
+        valuesSum = agents.Select(o => o.Y).Sum();
       }
       else
       {
