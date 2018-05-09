@@ -53,13 +53,13 @@ namespace GeneticAlgorithms
       if (!int.TryParse(PrecisionText.Text, out precision) && precision < 0)
       {
         CrossoverText.Focus();
-        MessageBox.Show("Enter mutation probabilty", "Warning", MessageBoxButtons.OK);
+        MessageBox.Show("Enter precision", "Warning", MessageBoxButtons.OK);
         return;
       }
       if (!uint.TryParse(AgentsNumberText.Text, out agentsNumber) && agentsNumber < 1)
       {
         CrossoverText.Focus();
-        MessageBox.Show("Enter mutation probabilty", "Warning", MessageBoxButtons.OK);
+        MessageBox.Show("Enter agents number", "Warning", MessageBoxButtons.OK);
         return;
       }
       ResultGroup.Enabled = true;
@@ -85,17 +85,22 @@ namespace GeneticAlgorithms
     private void ProcessGeneticAlgortihm(int precision, uint agentsCount, float mutationProbability, float crossProbabilty, int maxIterationValue)
     {
       int chromosomeLength = SimpleAlgorithmHelper.CalculateChromosomeLength(precision, Consts.LowerBound, Consts.UpperBound);
+      
+      //First generation:
       Generation generation = new Generation(agentsCount, chromosomeLength, Consts.LowerBound, Consts.UpperBound, 0);
       generation.CreateFirstPoppulation();
-      generation.SetMaxGenerationValue();
-      generation.SetMeanGenerationValue();
-      generation.SetSumForGenerationValues();
+      generation.CalculateParameters();
+      
+      //Add to history:
       history.Add(generation);
-      int generationNumber = 1;
-      SimpleAlgorithmHelper.Reproduction(generation, agentsCount);
-      while (generationNumber <= Consts.MaxIterationValue)
-      {
 
+      int generationNumber = 0;
+
+      while (generationNumber <= 1/*Consts.MaxIterationValue*/ || generation.MaxValue != generation.MeanValue)
+      {
+        generationNumber++;
+        // Reproduction generation:
+        var reprodudction = SimpleAlgorithmHelper.Reproduction(generation, agentsCount);
       }
 
       /********************* Chart *****************************/

@@ -81,6 +81,7 @@ namespace SimpleGeneticAlgorithm
       if (agents != null && agents.Count > 0)
       {
         meanValue = agents.Select(o => o.Y).Average();
+
       }
       else
       {
