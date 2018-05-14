@@ -34,6 +34,12 @@ namespace SimpleGeneticAlgorithm
       realY = SimpleAlgorithmHelper.SetFunctionValue(realX);
     }
 
+    public Agent(float x, float y)
+    {
+      realX = x;
+      realY = y;
+    }
+
     public float Y
     {
       get { return realY; }

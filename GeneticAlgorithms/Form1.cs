@@ -96,11 +96,12 @@ namespace GeneticAlgorithms
 
       int generationNumber = 0;
 
-      while (generationNumber <= 1/*Consts.MaxIterationValue*/ || generation.MaxValue != generation.MeanValue)
+      while (generationNumber <= 1/*Consts.MaxIterationValue*/ && generation.MaxValue != generation.MeanValue)
       {
         generationNumber++;
         // Reproduction generation:
-        var reprodudction = SimpleAlgorithmHelper.Reproduction(generation, agentsCount);
+        Generation tempGeneration = SimpleAlgorithmHelper.Reproduction(generation, agentsCount);
+
       }
 
       /********************* Chart *****************************/

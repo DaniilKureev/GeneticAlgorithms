@@ -24,6 +24,11 @@ namespace SimpleGeneticAlgorithm
       agents = new List<Agent>();
     }
 
+    public Generation(IEnumerable<Agent> newAgents)
+    {
+      agents = new List<Agent>(newAgents);
+    }
+
     public Generation(uint agentsCount, int chromosomeLength, int lowerBound, int upperBound, int generationNumber)
     {
       agents = new List<Agent>();
