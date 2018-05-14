@@ -59,14 +59,35 @@ namespace SimpleGeneticAlgorithm
     public static Generation Reproduction(Generation originalPopulation, uint agentsCount)
     {
       List<int> agentNumber = new List<int>();
-      Generation newGeneration = new Generation();
-      foreach (var agent in originalPopulation)
+      List<Agent> agents = new List<Agent>();
+      float minY = originalPopulation.Select(o => o.Y).Min();
+      Generation tempGeneration = new Generation(originalPopulation.Agents.Select(o => new Agent(o.X, o.Y + Math.Abs(minY))));
+      tempGeneration.SetSumForGenerationValues();
+
+      foreach (var agent in tempGeneration)
       {
-        agent.SetSelectionProbability(originalPopulation.ValuesSum);
+        agent.SetSelectionProbability(tempGeneration.ValuesSum);
         agentNumber.Add((int)Math.Round(agent.SelectionProbability * agentsCount));
       }
+
       var newPopulationSize = agentNumber.Sum();
-      return new Generation();
+      while (newPopulationSize < agentsCount)
+      {
+        int item = agentNumber.First(o => o > 0);
+        item++;
+        newPopulationSize = agentNumber.Sum();
+      }
+
+      for (int i = 0; i < agentsCount; i++)
+      {
+        int n = agentNumber[i];
+        for(int j = 0; j < n; j++)
+        {
+          agents.Add(originalPopulation.Agents[i]);
+        }
+      }
+
+      return new Generation(agents);
     }
   }
 }
