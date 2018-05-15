@@ -24,12 +24,6 @@ namespace SimpleGeneticAlgorithm
       }
 
       var newPopulationSize = agentNumber.Sum();
-      /*while (newPopulationSize < agentsCount)
-      {
-        int item = agentNumber.First(o => o > 0);
-        item++;
-        newPopulationSize = agentNumber.Sum();
-      }*/
 
       for (int i = 0; i < agentsCount; i++)
       {
@@ -43,21 +37,23 @@ namespace SimpleGeneticAlgorithm
       return new Generation(agents);
     }
 
-    public static void Crossover(Generation population, float probability)
+    public static Generation Crossover(Generation population, float probability)
     {
       int chromosomeLength = population.Agents.First().Chromosome.Count;
       int agentsCount = population.Agents.Count;
       List<Agent> newAgents = new List<Agent>();
       Random rand = new Random();
 
-      for (int i = 0; i < agentsCount; i += 2)
+      for (int i = 0; i < agentsCount; i++)
       {
         var p = rand.NextDouble();
         if (p <= probability)
         {
           int k = rand.Next(0, chromosomeLength);
           Agent a = population.Agents[i];
-          Agent b = i != agentsCount - 1 ? population.Agents[i + 1] : null;
+          int secondAgent = rand.Next(0, agentsCount);
+          //Agent b = i != agentsCount - 1 ? population.Agents[i + 1] : null;
+          Agent b = population.Agents[secondAgent];
           if (b != null)
           {
             BitArray first = new BitArray(chromosomeLength);
@@ -88,7 +84,7 @@ namespace SimpleGeneticAlgorithm
         else
         {
           Agent a = population.Agents[i];
-          Agent b = i != agentsCount - 1 ? population.Agents[i + 1] : null;
+          /*Agent b = i != agentsCount - 1 ? population.Agents[i + 1] : null;
           if (b != null)
           {
             newAgents.Add(a);
@@ -97,10 +93,11 @@ namespace SimpleGeneticAlgorithm
           else
           {
             newAgents.Add(a);
-          }
+          }*/
+          newAgents.Add(a);
         }
       }
-      population = new Generation(newAgents);
+      return new Generation(newAgents);
     }
 
     public static void Mutation(Generation population, float probability)
@@ -112,9 +109,22 @@ namespace SimpleGeneticAlgorithm
       if (p <= probability)
       {
         int agentNumber = rand.Next(0, agentsCount);
-        int position = rand.Next(0, agentsCount);
+        int position = rand.Next(0, chromosomeLength);
         population.Agents[agentNumber].Chromosome.Set(position, !population.Agents[agentNumber].Chromosome.Get(position));
       }
+    }
+
+    public static Generation Merge(Generation one, Generation two, int agentsCount)
+    {
+      List<Agent> wholeAgents = new List<Agent>(one.Agents);
+      wholeAgents.AddRange(two.Agents);
+      List<Agent> sorted = new List<Agent>(wholeAgents);
+      sorted.Sort(delegate (Agent a1, Agent a2) { return a2.Y.CompareTo(a1.Y); });
+      List<float> best = sorted.Take(agentsCount).Select(o => o.Y).ToList();
+      List<Agent> result = wholeAgents.Where(o => best.Contains(o.Y)).ToList();
+      one = new Generation(result.Take(100));
+      one.CalculateParameters();
+      return one;
     }
   }
 }
