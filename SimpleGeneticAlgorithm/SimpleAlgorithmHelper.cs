@@ -9,6 +9,16 @@ namespace SimpleGeneticAlgorithm
 {
   public static class SimpleAlgorithmHelper
   {
+    public static int FromBitArrayToInteger(BitArray bits)
+    {
+      int res = 0;
+      for (int i = 0; i < bits.Count; i++)
+      {
+        res += Convert.ToInt32(bits.Get(i))*(int)Math.Pow(2, i);
+      }
+      return res;
+    }
+
     public static int CalculateChromosomeLength(int precision, int lowerBound, int upperBound)
     {
       double itervalsNumber = (upperBound - lowerBound) * Math.Pow(10, precision);
@@ -47,47 +57,6 @@ namespace SimpleGeneticAlgorithm
     public static float SetFunctionValue(float realX)
     {
       return (float)((realX - 1) * Math.Cos(3 * realX - 15));
-    }
-
-    public static void CalculateParameters(this Generation generation)
-    {
-      generation.SetMaxGenerationValue();
-      generation.SetMeanGenerationValue();
-      generation.SetSumForGenerationValues();
-    }
-
-    public static Generation Reproduction(Generation originalPopulation, uint agentsCount)
-    {
-      List<int> agentNumber = new List<int>();
-      List<Agent> agents = new List<Agent>();
-      float minY = originalPopulation.Select(o => o.Y).Min();
-      Generation tempGeneration = new Generation(originalPopulation.Agents.Select(o => new Agent(o.X, o.Y + Math.Abs(minY))));
-      tempGeneration.SetSumForGenerationValues();
-
-      foreach (var agent in tempGeneration)
-      {
-        agent.SetSelectionProbability(tempGeneration.ValuesSum);
-        agentNumber.Add((int)Math.Round(agent.SelectionProbability * agentsCount));
-      }
-
-      var newPopulationSize = agentNumber.Sum();
-      while (newPopulationSize < agentsCount)
-      {
-        int item = agentNumber.First(o => o > 0);
-        item++;
-        newPopulationSize = agentNumber.Sum();
-      }
-
-      for (int i = 0; i < agentsCount; i++)
-      {
-        int n = agentNumber[i];
-        for(int j = 0; j < n; j++)
-        {
-          agents.Add(originalPopulation.Agents[i]);
-        }
-      }
-
-      return new Generation(agents);
     }
   }
 }

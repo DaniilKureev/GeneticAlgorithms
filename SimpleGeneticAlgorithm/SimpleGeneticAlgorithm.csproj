@@ -41,7 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Agent.cs" />
+    <Compile Include="Consts.cs" />
     <Compile Include="Generation.cs" />
+    <Compile Include="SimpleAlgorithm.cs" />
     <Compile Include="SimpleAlgorithmHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

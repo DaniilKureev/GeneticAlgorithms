@@ -11,13 +11,11 @@ namespace SimpleGeneticAlgorithm
   {
     List<Agent> agents;
     int chromosomeLength;
-    uint agentsCount;
+    int agentsCount;
     float maxValue;
     float meanValue;
     float valuesSum;
     int generationNumber;
-    int lowerIntervalBound;
-    int upperIntervalBound;
 
     public Generation()
     {
@@ -26,17 +24,17 @@ namespace SimpleGeneticAlgorithm
 
     public Generation(IEnumerable<Agent> newAgents)
     {
+      if (newAgents == null) throw new NullReferenceException();
       agents = new List<Agent>(newAgents);
+      agentsCount = agents.Count;
     }
 
-    public Generation(uint agentsCount, int chromosomeLength, int lowerBound, int upperBound, int generationNumber)
+    public Generation(int agentsCount, int chromosomeLength, int generationNumber)
     {
       agents = new List<Agent>();
       this.agentsCount = agentsCount;
       this.chromosomeLength = chromosomeLength;
       this.generationNumber = generationNumber;
-      lowerIntervalBound = lowerBound;
-      upperIntervalBound = upperBound;
     }
 
     public List<Agent> Agents
@@ -114,9 +112,18 @@ namespace SimpleGeneticAlgorithm
         for (uint i = 0; i < agentsCount; i++)
         {
           int x = (int)(0 + (intervalsCount - 0.0) * i / (agentsCount - 1));
-          agents.Add(new Agent(x, chromosomeLength, intervalsCount, lowerIntervalBound, upperIntervalBound));
+          agents.Add(new Agent(x, chromosomeLength));
         }
       }
+    }
+
+    public void CalculateParameters()
+    {
+      if (agents == null) throw new NullReferenceException();
+
+      SetMaxGenerationValue();
+      SetMeanGenerationValue();
+      SetSumForGenerationValues();
     }
   }
 }

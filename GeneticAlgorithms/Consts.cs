@@ -10,6 +10,6 @@ namespace GeneticAlgorithms
   {
     public static readonly int LowerBound = -10;
     public static readonly int UpperBound = 10;
-    public static readonly int MaxIterationValue = 10000;
+    public static readonly int MaxIterationValue = 100;
   }
 }

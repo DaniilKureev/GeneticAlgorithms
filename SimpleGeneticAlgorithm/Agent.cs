@@ -12,25 +12,16 @@ namespace SimpleGeneticAlgorithm
     float realY;
     float realX;
     int integerX;
-
     BitArray chromosome;
-
-    int lowerIntevalBound;
-    int upperIntervalBound;
-    int intervalsCount;
-
     float selectionProbability;
 
     public Agent() { }
 
-    public Agent(int xValue, int chromosomeLength, int intervalsCount, int lowerBound, int upperBound)
+    public Agent(int xValue, int chromosomeLength)
     {
       integerX = xValue;
-      lowerIntevalBound = lowerBound;
-      upperIntervalBound = upperBound;
-      this.intervalsCount = intervalsCount;
       chromosome = SimpleAlgorithmHelper.ToBitArray(integerX, chromosomeLength);
-      realX = SimpleAlgorithmHelper.ToRealValue(integerX, lowerIntevalBound, upperIntervalBound, intervalsCount);
+      realX = SimpleAlgorithmHelper.ToRealValue(integerX, Consts.LowerBound, Consts.UpperBound, (int)Math.Pow(2, chromosomeLength) - 1);
       realY = SimpleAlgorithmHelper.SetFunctionValue(realX);
     }
 
@@ -38,6 +29,12 @@ namespace SimpleGeneticAlgorithm
     {
       realX = x;
       realY = y;
+    }
+
+    public Agent(BitArray chrom)
+    {
+      if (chrom == null) throw new NullReferenceException();
+      chromosome = chrom;
     }
 
     public float Y
@@ -52,12 +49,22 @@ namespace SimpleGeneticAlgorithm
 
     public BitArray Chromosome
     {
-      get { return chromosome; }
+      get
+      {
+        return chromosome;
+      }
+      set
+      {
+        chromosome = value;
+      }
     }
 
     public float SelectionProbability
     {
-      get { return selectionProbability; }
+      get
+      {
+        return selectionProbability;
+      }
     }
 
     public void SetSelectionProbability(float sumOfWholeValues)
@@ -66,6 +73,15 @@ namespace SimpleGeneticAlgorithm
       {
         selectionProbability = realY / sumOfWholeValues;
       }
+    }
+
+    public void CalculateParametersFromChromosome()
+    {
+      if (chromosome == null) throw new NullReferenceException();
+
+      integerX = SimpleAlgorithmHelper.FromBitArrayToInteger(chromosome);
+      realX = SimpleAlgorithmHelper.ToRealValue(integerX, Consts.LowerBound, Consts.UpperBound, (int)Math.Pow(2, chromosome.Count) - 1);
+      realY = SimpleAlgorithmHelper.SetFunctionValue(realX);
     }
   }
 }

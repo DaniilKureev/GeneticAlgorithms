@@ -25,8 +25,8 @@ namespace GeneticAlgorithms
       StartPosition = FormStartPosition.CenterScreen;
       Chart.Dock = DockStyle.Fill;
       Chart.ChartAreas.Add(new ChartArea("Math functions"));
-      CrossoverText.Text = "0,5";
-      MutationText.Text = "0,01";
+      CrossoverText.Text = "0.5";
+      MutationText.Text = "0.01";
       PrecisionText.Text = "3";
       AgentsNumberText.Text = "100";
       history = new List<Generation>();
@@ -37,7 +37,7 @@ namespace GeneticAlgorithms
       int precision;
       float mutationProbability;
       float crossProbabilty;
-      uint agentsNumber;
+      int agentsNumber;
       if (!float.TryParse(CrossoverText.Text, out crossProbabilty))
       {
         CrossoverText.Focus();
@@ -56,7 +56,7 @@ namespace GeneticAlgorithms
         MessageBox.Show("Enter precision", "Warning", MessageBoxButtons.OK);
         return;
       }
-      if (!uint.TryParse(AgentsNumberText.Text, out agentsNumber) && agentsNumber < 1)
+      if (!int.TryParse(AgentsNumberText.Text, out agentsNumber) && agentsNumber < 1)
       {
         CrossoverText.Focus();
         MessageBox.Show("Enter agents number", "Warning", MessageBoxButtons.OK);
@@ -65,7 +65,7 @@ namespace GeneticAlgorithms
       ResultGroup.Enabled = true;
       try
       {
-        ProcessGeneticAlgortihm(precision, agentsNumber, mutationProbability, crossProbabilty, Consts.MaxIterationValue);
+        ProcessGeneticAlgortihm(precision, agentsNumber, mutationProbability, crossProbabilty);
       }
       catch (ApplicationException ex)
       {
@@ -82,12 +82,12 @@ namespace GeneticAlgorithms
 
     }
 
-    private void ProcessGeneticAlgortihm(int precision, uint agentsCount, float mutationProbability, float crossProbabilty, int maxIterationValue)
+    private void ProcessGeneticAlgortihm(int precision, int agentsCount, float mutationProbability, float crossProbabilty)
     {
       int chromosomeLength = SimpleAlgorithmHelper.CalculateChromosomeLength(precision, Consts.LowerBound, Consts.UpperBound);
       
       //First generation:
-      Generation generation = new Generation(agentsCount, chromosomeLength, Consts.LowerBound, Consts.UpperBound, 0);
+      Generation generation = new Generation(agentsCount, chromosomeLength, 0);
       generation.CreateFirstPoppulation();
       generation.CalculateParameters();
       
@@ -96,12 +96,16 @@ namespace GeneticAlgorithms
 
       int generationNumber = 0;
 
-      while (generationNumber <= 1/*Consts.MaxIterationValue*/ && generation.MaxValue != generation.MeanValue)
+      while (generationNumber <= Consts.MaxIterationValue && generation.MaxValue != generation.MeanValue)
       {
         generationNumber++;
-        // Reproduction generation:
-        Generation tempGeneration = SimpleAlgorithmHelper.Reproduction(generation, agentsCount);
-
+        Generation nextGeneration = SimpleAlgorithm.Reproduction(generation, agentsCount);
+        SimpleAlgorithm.Crossover(nextGeneration, crossProbabilty);
+        SimpleAlgorithm.Mutation(nextGeneration, mutationProbability);
+        nextGeneration.Agents.ForEach(agent => agent.CalculateParametersFromChromosome());
+        nextGeneration.CalculateParameters();
+        generation = nextGeneration;
+        nextGeneration = null;
       }
 
       /********************* Chart *****************************/
