@@ -20,8 +20,8 @@ namespace GeneticAlgorithms
       StartPosition = FormStartPosition.CenterScreen;
       Chart.Dock = DockStyle.Fill;
       Chart.ChartAreas.Add(new ChartArea("Math functions"));
-      CrossoverText.Text = "0.5";
-      MutationText.Text = "0.01";
+      CrossoverText.Text = "0,5";
+      MutationText.Text = "0,01";
       PrecisionText.Text = "3";
       AgentsNumberText.Text = "100";
       history = new List<Generation>();
