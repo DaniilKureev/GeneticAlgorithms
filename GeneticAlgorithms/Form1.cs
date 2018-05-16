@@ -1,14 +1,9 @@
-﻿using System;
+﻿using SimpleGeneticAlgorithm;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-using SimpleGeneticAlgorithm;
 
 namespace GeneticAlgorithms
 {
@@ -16,6 +11,7 @@ namespace GeneticAlgorithms
   public partial class Form1 : Form
   {
     List<Generation> history;
+    static int iteration;
 
     public Form1()
     {
@@ -29,6 +25,7 @@ namespace GeneticAlgorithms
       PrecisionText.Text = "3";
       AgentsNumberText.Text = "100";
       history = new List<Generation>();
+      iteration = 0;
     }
 
     private void StartButton_Click(object sender, EventArgs e)
@@ -78,7 +75,17 @@ namespace GeneticAlgorithms
 
     private void ClearButton_Click(object sender, EventArgs e)
     {
-
+      history = new List<Generation>();
+      iteration = 0;
+      if (Chart.Series.Count > 1)
+      {
+        Chart.Series.RemoveAt(1);
+      }
+      MeanLabel.Text = Consts.Mean;
+      MaxLabel.Text = Consts.Max;
+      IterationLabel.Text = Consts.Iteration;
+      ResultGroup.Enabled = false;
+      ParametersGroup.Enabled = true;
     }
 
     private void ProcessGeneticAlgortihm(int precision, int agentsCount, float mutationProbability, float crossProbabilty)
@@ -95,6 +102,7 @@ namespace GeneticAlgorithms
       //Parameters:
       int max = (int)(generation.MaxValue * 100);
       int mean = (int)(generation.MeanValue * 100);
+      // Genetic algorithm:
       while (generationNumber <= Consts.MaxIterationValue && max != mean)
       {
         generationNumber++;
@@ -107,6 +115,11 @@ namespace GeneticAlgorithms
         max = (int)(generation.MaxValue * 100);
         mean = (int)(generation.MeanValue * 100);
       }
+
+      iteration = generationNumber;
+      MeanLabel.Text = Consts.Mean + generation.MeanValue.ToString("G3");
+      MaxLabel.Text = Consts.Max + generation.MaxValue.ToString("G3");
+      IterationLabel.Text = Consts.Iteration + iteration.ToString();
 
       /********************* Chart *****************************/
       string seriesName2 = "Agents";
@@ -121,6 +134,7 @@ namespace GeneticAlgorithms
       }
       Chart.Series.Add(mySeriesOfPoint2);
       /********************* Chart *****************************/
+      ParametersGroup.Enabled = false;
     }
 
     private void Form1_Load(object sender, EventArgs e)
@@ -137,16 +151,98 @@ namespace GeneticAlgorithms
       {
         mySeriesOfPoint.Points.AddXY(i, SimpleAlgorithmHelper.SetFunctionValue(i));
       }
-      /*foreach(var agent in generation)
-      {
-        DataPoint dp = new DataPoint(agent.X, agent.Y);
-        dp.MarkerStyle = MarkerStyle.Circle;
-        //dp.IsValueShownAsLabel = true; //Показать значение в точке
-        mySeriesOfPoint.Points.Add(dp);
-      }*/
-
       //Добавляем созданный набор точек в Chart
       Chart.Series.Add(mySeriesOfPoint);
+    }
+
+    private void StepBackButton_Click(object sender, EventArgs e)
+    {
+      if(iteration > 0)
+      {
+        iteration--;
+        Generation generation = history[iteration];
+        Chart.Series.RemoveAt(1);
+        string seriesName2 = "Agents";
+        Series mySeriesOfPoint2 = new Series(seriesName2);
+        mySeriesOfPoint2.ChartType = SeriesChartType.Point;
+        mySeriesOfPoint2.Color = Color.Red;
+        mySeriesOfPoint2.ChartArea = "Math functions";
+        foreach (var agent in generation)
+        {
+          DataPoint dp = new DataPoint(agent.X, agent.Y);
+          mySeriesOfPoint2.Points.Add(dp);
+        }
+        Chart.Series.Add(mySeriesOfPoint2);
+        MeanLabel.Text = Consts.Mean + generation.MeanValue.ToString("G3");
+        MaxLabel.Text = Consts.Max + generation.MaxValue.ToString("G3");
+        IterationLabel.Text = Consts.Iteration + iteration.ToString();
+      }
+    }
+
+    private void StepUpButton_Click(object sender, EventArgs e)
+    {
+      if (iteration < history.Count - 1)
+      {
+        iteration++;
+        Generation generation = history[iteration];
+        Chart.Series.RemoveAt(1);
+        string seriesName2 = "Agents";
+        Series mySeriesOfPoint2 = new Series(seriesName2);
+        mySeriesOfPoint2.ChartType = SeriesChartType.Point;
+        mySeriesOfPoint2.Color = Color.Red;
+        mySeriesOfPoint2.ChartArea = "Math functions";
+        foreach (var agent in generation)
+        {
+          DataPoint dp = new DataPoint(agent.X, agent.Y);
+          mySeriesOfPoint2.Points.Add(dp);
+        }
+        Chart.Series.Add(mySeriesOfPoint2);
+        MeanLabel.Text = Consts.Mean + generation.MeanValue.ToString("G3");
+        MaxLabel.Text = Consts.Max + generation.MaxValue.ToString("G3");
+        IterationLabel.Text = Consts.Iteration + iteration.ToString();
+      }
+    }
+
+    private void FirstButton_Click(object sender, EventArgs e)
+    {
+      iteration = 0;
+      Generation generation = history[iteration];
+      Chart.Series.RemoveAt(1);
+      string seriesName2 = "Agents";
+      Series mySeriesOfPoint2 = new Series(seriesName2);
+      mySeriesOfPoint2.ChartType = SeriesChartType.Point;
+      mySeriesOfPoint2.Color = Color.Red;
+      mySeriesOfPoint2.ChartArea = "Math functions";
+      foreach (var agent in generation)
+      {
+        DataPoint dp = new DataPoint(agent.X, agent.Y);
+        mySeriesOfPoint2.Points.Add(dp);
+      }
+      Chart.Series.Add(mySeriesOfPoint2);
+      MeanLabel.Text = Consts.Mean + generation.MeanValue.ToString("G3");
+      MaxLabel.Text = Consts.Max + generation.MaxValue.ToString("G3");
+      IterationLabel.Text = Consts.Iteration + iteration.ToString();
+    }
+
+    private void LastButton_Click(object sender, EventArgs e)
+    {
+      iteration = history.Count - 1;
+      Generation generation = history[iteration];
+      Chart.Series.RemoveAt(1);
+      string seriesName2 = "Agents";
+      Series mySeriesOfPoint2 = new Series(seriesName2);
+      mySeriesOfPoint2.ChartType = SeriesChartType.Point;
+      mySeriesOfPoint2.Color = Color.Red;
+      mySeriesOfPoint2.ChartArea = "Math functions";
+      foreach (var agent in generation)
+      {
+        DataPoint dp = new DataPoint(agent.X, agent.Y);
+        mySeriesOfPoint2.Points.Add(dp);
+      }
+      Chart.Series.Add(mySeriesOfPoint2);
+      MeanLabel.Text = Consts.Mean + generation.MeanValue.ToString("G3");
+      MaxLabel.Text = Consts.Max + generation.MaxValue.ToString("G3");
+      IterationLabel.Text = Consts.Iteration + iteration.ToString();
     }
   }
 }
