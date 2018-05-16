@@ -79,8 +79,8 @@ namespace SimpleGeneticAlgorithm
         }
         else
         {
-          newAgents.Add(a);
-          newAgents.Add(b);
+          //newAgents.Add(a);
+         // newAgents.Add(b);
         }
         parents.RemoveAt(secondParent);
         parents.RemoveAt(firstParent);

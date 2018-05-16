@@ -34,13 +34,13 @@ namespace GeneticAlgorithms
       float mutationProbability;
       float crossProbabilty;
       int agentsNumber;
-      if (!float.TryParse(CrossoverText.Text, out crossProbabilty))
+      if (!float.TryParse(CrossoverText.Text, out crossProbabilty) && crossProbabilty <= 0)
       {
         CrossoverText.Focus();
         MessageBox.Show("Enter crossover probabilty", "Warning", MessageBoxButtons.OK);
         return;
       }
-      if (!float.TryParse(MutationText.Text, out mutationProbability))
+      if (!float.TryParse(MutationText.Text, out mutationProbability) && mutationProbability <= 0)
       {
         CrossoverText.Focus();
         MessageBox.Show("Enter mutation probabilty", "Warning", MessageBoxButtons.OK);

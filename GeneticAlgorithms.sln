@@ -1,11 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2026
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneticAlgorithms", "GeneticAlgorithms\GeneticAlgorithms.csproj", "{CE37EBD6-65DB-46D0-BCF5-E2C86AEF269B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleGeneticAlgorithm", "SimpleGeneticAlgorithm\SimpleGeneticAlgorithm.csproj", "{D1B8C868-00A0-4AD2-A848-F1BD592A6DFA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2", "2", "{F8350D22-791D-47F7-819D-23E7BD75E81A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1", "1", "{6843C12F-2BC0-44FC-9D78-91BFAEE3B1E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +28,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CE37EBD6-65DB-46D0-BCF5-E2C86AEF269B} = {6843C12F-2BC0-44FC-9D78-91BFAEE3B1E4}
+		{D1B8C868-00A0-4AD2-A848-F1BD592A6DFA} = {6843C12F-2BC0-44FC-9D78-91BFAEE3B1E4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1C8C09D7-F715-4196-9355-E0CC646CF61F}
