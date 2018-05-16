@@ -79,7 +79,7 @@ namespace SimpleGeneticAlgorithm
     {
       if (chromosome == null) throw new NullReferenceException();
 
-      integerX = SimpleAlgorithmHelper.FromBitArrayToInteger(chromosome);
+      integerX = SimpleAlgorithmHelper.FromBitArrayToInt32(chromosome);
       realX = SimpleAlgorithmHelper.ToRealValue(integerX, Consts.LowerBound, Consts.UpperBound, (int)Math.Pow(2, chromosome.Count) - 1);
       realY = SimpleAlgorithmHelper.SetFunctionValue(realX);
     }

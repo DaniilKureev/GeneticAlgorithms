@@ -41,62 +41,53 @@ namespace SimpleGeneticAlgorithm
     {
       int chromosomeLength = population.Agents.First().Chromosome.Count;
       int agentsCount = population.Agents.Count;
+      List<Agent> parents = new List<Agent>(population.Agents);
       List<Agent> newAgents = new List<Agent>();
       Random rand = new Random();
 
-      for (int i = 0; i < agentsCount; i++)
+      while(parents.Count > 1)
       {
         var p = rand.NextDouble();
+        int firstParent = 0;
+        int secondParent = rand.Next(1, parents.Count);
+        Agent a = parents[firstParent];
+        Agent b = parents[secondParent];
         if (p <= probability)
         {
           int k = rand.Next(0, chromosomeLength);
-          Agent a = population.Agents[i];
-          int secondAgent = rand.Next(0, agentsCount);
-          //Agent b = i != agentsCount - 1 ? population.Agents[i + 1] : null;
-          Agent b = population.Agents[secondAgent];
-          if (b != null)
+          BitArray first = new BitArray(chromosomeLength);
+          BitArray second = new BitArray(chromosomeLength);
+          for (int n = 0; n < chromosomeLength; n++)
           {
-            BitArray first = new BitArray(chromosomeLength);
-            BitArray second = new BitArray(chromosomeLength);
-            for (int n = 0; n < chromosomeLength; n++)
+            if (n < k)
             {
-              if (n < k)
-              {
-                first.Set(n, a.Chromosome.Get(n));
-                second.Set(n, b.Chromosome.Get(n));
-              }
-              else
-              {
-                first.Set(n, b.Chromosome.Get(n));
-                second.Set(n, a.Chromosome.Get(n));
-              }
+              first.Set(n, a.Chromosome.Get(n));
+              second.Set(n, b.Chromosome.Get(n));
             }
-            Agent newA = new Agent(first);
-            Agent newB = new Agent(second);
-            newAgents.Add(newA);
-            newAgents.Add(newB);
+            else
+            {
+              first.Set(n, b.Chromosome.Get(n));
+              second.Set(n, a.Chromosome.Get(n));
+            }
           }
-          else
-          {
-            newAgents.Add(a);
-          }
+          Agent newA = new Agent(first);
+          Agent newB = new Agent(second);
+          newA.CalculateParametersFromChromosome();
+          newB.CalculateParametersFromChromosome();
+          newAgents.Add(newA);
+          newAgents.Add(newB);
         }
         else
         {
-          Agent a = population.Agents[i];
-          /*Agent b = i != agentsCount - 1 ? population.Agents[i + 1] : null;
-          if (b != null)
-          {
-            newAgents.Add(a);
-            newAgents.Add(b);
-          }
-          else
-          {
-            newAgents.Add(a);
-          }*/
           newAgents.Add(a);
+          newAgents.Add(b);
         }
+        parents.RemoveAt(secondParent);
+        parents.RemoveAt(firstParent);
       }
+
+      if (parents.Count == 1) newAgents.Add(parents.First());
+
       return new Generation(newAgents);
     }
 
@@ -118,13 +109,10 @@ namespace SimpleGeneticAlgorithm
     {
       List<Agent> wholeAgents = new List<Agent>(one.Agents);
       wholeAgents.AddRange(two.Agents);
-      List<Agent> sorted = new List<Agent>(wholeAgents);
-      sorted.Sort(delegate (Agent a1, Agent a2) { return a2.Y.CompareTo(a1.Y); });
-      List<float> best = sorted.Take(agentsCount).Select(o => o.Y).ToList();
-      List<Agent> result = wholeAgents.Where(o => best.Contains(o.Y)).ToList();
-      one = new Generation(result.Take(100));
-      one.CalculateParameters();
-      return one;
+      wholeAgents.Sort(delegate (Agent a1, Agent a2) { return a2.Y.CompareTo(a1.Y); });
+      Generation res = new Generation(wholeAgents.Take(agentsCount));
+      res.CalculateParameters();
+      return res;
     }
   }
 }

@@ -15,7 +15,6 @@ namespace GeneticAlgorithms
   // 6 Вариант
   public partial class Form1 : Form
   {
-
     List<Generation> history;
 
     public Form1()
@@ -25,8 +24,8 @@ namespace GeneticAlgorithms
       StartPosition = FormStartPosition.CenterScreen;
       Chart.Dock = DockStyle.Fill;
       Chart.ChartAreas.Add(new ChartArea("Math functions"));
-      CrossoverText.Text = "0,5";
-      MutationText.Text = "0,01";
+      CrossoverText.Text = "0.5";
+      MutationText.Text = "0.01";
       PrecisionText.Text = "3";
       AgentsNumberText.Text = "100";
       history = new List<Generation>();
@@ -85,28 +84,47 @@ namespace GeneticAlgorithms
     private void ProcessGeneticAlgortihm(int precision, int agentsCount, float mutationProbability, float crossProbabilty)
     {
       int chromosomeLength = SimpleAlgorithmHelper.CalculateChromosomeLength(precision, Consts.LowerBound, Consts.UpperBound);
-      
+
       //First generation:
+      int generationNumber = 0;
       Generation generation = new Generation(agentsCount, chromosomeLength, 0);
       generation.CreateFirstPoppulation();
       generation.CalculateParameters();
-      
       //Add to history:
       history.Add(generation);
-
-      int generationNumber = 0;
-
-      while (generationNumber <= Consts.MaxIterationValue && generation.MaxValue != generation.MeanValue)
+      //Parameters:
+      int max = (int)(generation.MaxValue * 100);
+      int mean = (int)(generation.MeanValue * 100);
+      while (generationNumber <= Consts.MaxIterationValue && max != mean)
       {
         generationNumber++;
         Generation nextGeneration = SimpleAlgorithm.Reproduction(generation, agentsCount);
         nextGeneration = SimpleAlgorithm.Crossover(nextGeneration, crossProbabilty);
         SimpleAlgorithm.Mutation(nextGeneration, mutationProbability);
-        nextGeneration.Agents.ForEach(agent => agent.CalculateParametersFromChromosome());
+        nextGeneration.CalculateParameters();
         generation = SimpleAlgorithm.Merge(generation, nextGeneration, agentsCount);
+        history.Add(generation);
+        max = (int)(generation.MaxValue * 100);
+        mean = (int)(generation.MeanValue * 100);
       }
 
       /********************* Chart *****************************/
+      string seriesName2 = "Agents";
+      Series mySeriesOfPoint2 = new Series(seriesName2);
+      mySeriesOfPoint2.ChartType = SeriesChartType.Point;
+      mySeriesOfPoint2.Color = Color.Red;
+      mySeriesOfPoint2.ChartArea = "Math functions";
+      foreach (var agent in generation)
+      {
+        DataPoint dp = new DataPoint(agent.X, agent.Y);
+        mySeriesOfPoint2.Points.Add(dp);
+      }
+      Chart.Series.Add(mySeriesOfPoint2);
+      /********************* Chart *****************************/
+    }
+
+    private void Form1_Load(object sender, EventArgs e)
+    {
       string seriesName = "(x - 1)Cos(3x - 15)";
       Chart.ChartAreas[0].AxisX.Minimum = Consts.LowerBound;
       Chart.ChartAreas[0].AxisX.Maximum = Consts.UpperBound;
@@ -116,7 +134,7 @@ namespace GeneticAlgorithms
       mySeriesOfPoint.Color = Color.Blue;
       mySeriesOfPoint.ChartArea = "Math functions";
       for (float i = Consts.LowerBound; i <= Consts.UpperBound; i += 0.001f)
-      {      
+      {
         mySeriesOfPoint.Points.AddXY(i, SimpleAlgorithmHelper.SetFunctionValue(i));
       }
       /*foreach(var agent in generation)
@@ -129,12 +147,6 @@ namespace GeneticAlgorithms
 
       //Добавляем созданный набор точек в Chart
       Chart.Series.Add(mySeriesOfPoint);
-      /********************* Chart *****************************/
-    }
-
-    private void Form1_Load(object sender, EventArgs e)
-    {
-
     }
   }
 }
